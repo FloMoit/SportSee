@@ -1,5 +1,3 @@
-import APIService from "../services/APIService";
-import { useQuery } from "@tanstack/react-query";
 import {
   BarChart,
   CartesianGrid,
@@ -11,31 +9,25 @@ import {
   Rectangle,
   ResponsiveContainer,
 } from "recharts";
+import { useUserActivity } from "../hooks/useUser";
 
-function Chart(props: { userId: number }) {
-  const { userId } = props;
+function ChartActivity() {
+  const queryUserActivity = useUserActivity();
 
-  const queryUserActivity = useQuery({
-    queryKey: ["activity", userId],
-    queryFn: () => APIService.getUserActivity(userId),
-    staleTime: 1000 * 60 * 5, //5 Minutes stale time
-  });
+  // TODO:USE MEMO
+  let data = [];
+  let count = 1;
+  for (let item of queryUserActivity.data.data.sessions) {
+    data.push({
+      name: count,
+      poids: item.kilogram,
+      calories: item.calories,
+    });
+    count++;
 
-  if (queryUserActivity.isLoading) {
-    return <div className="p-5">Chargement...</div>;
-  } else {
-    let data = [];
-    let count = 1;
-    for (let item of queryUserActivity.data.data.sessions) {
-      data.push({
-        name: count,
-        poids: item.kilogram,
-        calories: item.calories,
-      });
-      count++;
+    if (queryUserActivity.isLoading) {
+      return <div className="p-5">Chargement...</div>;
     }
-    console.log(queryUserActivity.data.data);
-    console.log(data);
 
     return (
       <div className="flex w-100 h-[320px] p-5 bg-gray-100 rounded">
@@ -67,4 +59,4 @@ function Chart(props: { userId: number }) {
   }
 }
 
-export default Chart;
+export default ChartActivity;

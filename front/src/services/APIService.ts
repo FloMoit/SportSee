@@ -1,22 +1,31 @@
 const baseUrl = "http://localhost:3000";
 
 class APIService {
-  static async getUserInfo(userId: number) {
-    const response = await fetch(baseUrl + "/user/" + userId);
+  userId: string;
+  constructor({ userId }: { userId: string }) {
+    this.userId = userId;
+  }
+
+  async getUserInfo() {
+    const response = await fetch(baseUrl + "/user/" + this.userId);
     return await response.json();
   }
-  static async getUserActivity(userId: number) {
-    const response = await fetch(baseUrl + "/user/" + userId + "/activity");
-    return await response.json();
-  }
-  static async getUserAverageSessions(userId: number) {
+  async getUserActivity() {
     const response = await fetch(
-      baseUrl + "/user/" + userId + "/average-sessions"
+      baseUrl + "/user/" + this.userId + "/activity"
     );
     return await response.json();
   }
-  static async getUserAveragePerformance(userId: number) {
-    const response = await fetch(baseUrl + "/user/" + userId + "/performance");
+  async getUserAverageSessions() {
+    const response = await fetch(
+      baseUrl + "/user/" + this.userId + "/average-sessions"
+    );
+    return await response.json();
+  }
+  async getUserAveragePerformance() {
+    const response = await fetch(
+      baseUrl + "/user/" + this.userId + "/performance"
+    );
     return await response.json();
   }
   /*

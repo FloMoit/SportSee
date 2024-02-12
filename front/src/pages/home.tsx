@@ -14,9 +14,9 @@ function Home() {
         <Header />
         <div className="flex grow">
           <Menu />
-          <div className="flex flex-col grow">
+          <div className="flex flex-col px-5 py-0 grow xl:px-32 xl:py-10">
             <Banner />
-            <div className="flex flex-row gap-3 p-5">
+            <div className="flex flex-row gap-3">
               <div className="flex flex-col w-3/4 ">
                 <div className="w-100">
                   <ChartActivity />

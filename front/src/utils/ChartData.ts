@@ -4,6 +4,22 @@ import glucidesIcon from "../assets/carbs-icon.png";
 import lipidesIcon from "../assets/fat-icon.png";
 
 class ChartData {
+  static formatBarChartData(data: any) {
+    let formatedData = [];
+    let count = 1;
+
+    for (let item of data.sessions) {
+      formatedData.push({
+        name: count,
+        poids: item.kilogram,
+        calories: item.calories,
+      });
+      count++;
+    }
+
+    return formatedData;
+  }
+
   static formatLineChartData(data: any) {
     function dayOfWeek(dayIndex: number) {
       if (dayIndex) return ["L", "M", "M", "J", "V", "S", "D"][dayIndex - 1];
@@ -56,6 +72,39 @@ class ChartData {
         icon: lipidesIcon,
       },
     };
+  }
+
+  static formatRadarData(rawData) {
+    let formatedData = [];
+    let count = 0;
+    let subject;
+    for (let item of rawData.data) {
+      if (count == 0 || count == 3) subject = rawData.kind[item.kind];
+      else subject = this.#formatText(rawData.kind[item.kind], 6);
+
+      formatedData.push({
+        subject: subject,
+        value: item.value,
+      });
+      count++;
+    }
+    return formatedData;
+  }
+
+  static #formatText(string, maxLength) {
+    // Vérifie si la chaîne doit être tronquée
+    const needsTruncation = string.length > maxLength;
+
+    // Tronque la chaîne si nécessaire et ajoute un point si tronquée
+    const truncatedString = needsTruncation
+      ? string.slice(0, maxLength) + "."
+      : string;
+
+    // Transforme la première lettre en majuscule
+    const result =
+      truncatedString.charAt(0).toUpperCase() + truncatedString.slice(1);
+
+    return result;
   }
 }
 export default ChartData;

@@ -88,7 +88,7 @@ function ChartSessions() {
           </defs>
         </LineChart>
       </ResponsiveContainer>
-      <span className="absolute opacity-60 top-[10%] left-[10%] text-white text-xs">
+      <span className="absolute opacity-60 top-[10%] left-[10%] text-white text-sm">
         Durée moyenne des
         <br />
         sessions

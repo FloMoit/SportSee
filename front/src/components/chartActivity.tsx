@@ -17,20 +17,22 @@ function ChartActivity() {
   // TODO:USE MEMO
   let data = [];
   let count = 1;
-  for (let item of queryUserActivity.data.data.sessions) {
-    data.push({
-      name: count,
-      poids: item.kilogram,
-      calories: item.calories,
-    });
-    count++;
+  if (queryUserActivity.data !== undefined) {
+    for (let item of queryUserActivity.data.data.sessions) {
+      data.push({
+        name: count,
+        poids: item.kilogram,
+        calories: item.calories,
+      });
+      count++;
+    }
 
     if (queryUserActivity.isLoading) {
       return <div className="p-5">Chargement...</div>;
     }
 
     return (
-      <div className="flex w-100 h-[320px] p-5 bg-gray-100 rounded">
+      <div className="flex w-100 h-[280px] p-5 bg-gray-100 rounded">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="2 2" vertical={false} />

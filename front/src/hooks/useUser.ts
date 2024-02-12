@@ -34,5 +34,22 @@ function useUserAverageSessions() {
 
   return query;
 }
-export { useUserActivity, useUserAverageSessions };
+function useUserPerformance() {
+  const api = useAPI();
+
+  const query = useQuery({
+    queryKey: ["performance", api.userId],
+    queryFn: () => api.getUserAveragePerformance(),
+    staleTime: 1000 * 60 * 5, //5 Minutes stale time
+  });
+
+  return query;
+}
+
+export {
+  useUserActivity,
+  useUserAverageSessions,
+  useUserPerformance,
+  useUserInfo,
+};
 export default useUserInfo;

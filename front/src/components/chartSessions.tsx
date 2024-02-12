@@ -5,101 +5,94 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  CartesianGrid,
 } from "recharts";
 import { useUserAverageSessions } from "../hooks/useUser";
+import ChartData from "../utils/ChartData";
 
 function ChartSessions() {
   const queryUserSession = useUserAverageSessions();
 
   //TODO: USE MEMO
   let data = [];
-  let count = 1;
-  const weekDays = ["L", "M", "M", "J", "V", "S", "D"];
-  for (let item of queryUserSession.data.data.sessions) {
-    data.push({
-      name: count,
-      sessionLength: item.sessionLength,
-      day: weekDays[item.day - 1],
-    });
-    count++;
+  if (queryUserSession.data !== undefined) {
+    data = ChartData.formatLineChartData(queryUserSession.data.data.sessions);
   }
 
   if (queryUserSession.isLoading) {
     return <div className="p-5">Chargement...</div>;
   }
 
+  const CustomTooltip = ({ active, payload }) => {
+    if (active) {
+      return (
+        <div className="p-2 bg-white shadow-lg">
+          <p className="text-xs font-bold text-black">{payload[0].value} min</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
-    <div className="flex w-100 h-[320px] rounded">
+    <div className="relative flex rounded w-100 aspect-square">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={data}
           margin={{ bottom: 10, left: 10, right: 10 }}
           style={{ backgroundColor: "#FF0000", borderRadius: 5 }}>
+          <CartesianGrid
+            strokeDasharray="0 0"
+            horizontal={false}
+            vertical={false}
+          />
           <XAxis
+            dataKey="day"
             tickLine={false}
             axisLine={false}
-            stroke="#fff"
-            dataKey={"day"}
-            dy={5}
+            tickMargin={10}
             tick={{
-              stroke: "#fff",
-              opacity: 0.6,
-              fontSize: 12,
-            }}
-          />
-          <YAxis
-            domain={["dataMin", "dataMax + 30"]}
-            dataKey="sessionLength"
-            hide
-          />
-          <Tooltip
-            separator=" "
-            labelFormatter={() => ""}
-            formatter={(value) => ["min", String(value)]}
-            wrapperStyle={{ pointerEvents: "none" }}
-            contentStyle={{
-              backgroundColor: "#fff",
-              padding: "5px 10px",
-              fontWeight: "bold",
+              fill: "rgba(255,255,255,0.6)",
               fontSize: "14px",
-              border: "none",
             }}
-            itemStyle={{ color: "#000" }}
+          />
+          <YAxis hide domain={["dataMin-10", "dataMax+80"]} />
+          <Tooltip
+            content={<CustomTooltip payload={data} />}
+            animationEasing="ease-out"
+            offset={1}
+            wrapperStyle={{ outline: "none" }}
+            cursor={false}
+            //position={{ x: 0 }}
+          />
+          <Line
+            type="natural"
+            dataKey="sessionLength"
+            stroke="url(#colorUv)"
+            strokeWidth={2}
+            activeDot={{
+              stroke: "#FFF",
+              strokeWidth: 4,
+              r: 2,
+            }}
+            dot={false}
           />
           <defs>
-            <linearGradient id="colorLine" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="5%" stopColor="#FF7070" stopOpacity={1} />
-              <stop offset="95%" stopColor="#FDE6E6" stopOpacity={1} />
+            <linearGradient id="colorUv" x1="0%" y1="0" x2="100%" y2="0">
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.3)" />
+              <stop offset="20%" stopColor="rgba(255, 255, 255, 0.4)" />
+              <stop offset="40%" stopColor="rgba(255, 255, 255, 0.5)" />
+              <stop offset="60%" stopColor="rgba(255, 255, 255, 0.6)" />
+              <stop offset="100%" stopColor="rgba(255, 255, 255, 1)" />
             </linearGradient>
           </defs>
-          <Line
-            type="monotone"
-            dataKey="sessionLength"
-            stroke="url(#colorLine)"
-            strokeWidth={2}
-            dot={false}
-            activeDot={{ stroke: "white", fill: "white", r: 5 }}
-          />
-          <text
-            x="30"
-            y="30"
-            opacity={0.6}
-            textAnchor="start"
-            dominantBaseline="hanging"
-            fill="white">
-            Durée moyenne des
-          </text>
-          <text
-            x="30"
-            y="50"
-            textAnchor="start"
-            opacity={0.6}
-            dominantBaseline="hanging"
-            fill="white">
-            sessions
-          </text>{" "}
         </LineChart>
       </ResponsiveContainer>
+      <span className="absolute opacity-60 top-[10%] left-[10%] text-white text-xs">
+        Durée moyenne des
+        <br />
+        sessions
+      </span>
     </div>
   );
 }

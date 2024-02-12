@@ -28,36 +28,6 @@ class APIService {
     );
     return await response.json();
   }
-  /*
-  static async post(userId: string, body: any) {
-    const response = await fetch(baseUrl + "/user/" + userId, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    });
-    return await response.json();
-  }
-
-  static async put(url: string, body: any) {
-    const response = await fetch(url, {
-      method: "PUT",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    });
-    return await response.json();
-  }
-
-  static async delete(url: string) {
-    const response = await fetch(url, {
-      method: "DELETE",
-    });
-    return await response.json();
-  }
-  */
 }
 
 export default APIService;

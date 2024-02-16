@@ -4,47 +4,37 @@ import glucidesIcon from "../assets/carbs-icon.png";
 import lipidesIcon from "../assets/fat-icon.png";
 
 class ChartData {
-  static formatBarChartData(data: any) {
-    let formatedData = [];
-    let count = 1;
-
-    for (let item of data.sessions) {
-      formatedData.push({
-        name: count,
-        poids: item.kilogram,
-        calories: item.calories,
-      });
-      count++;
-    }
+  static formatBarChartData(data?: {
+    sessions: { kilogram: number; calories: number }[];
+  }) {
+    if (!data) return [];
+    const formatedData = data.sessions.map((item, index) => ({
+      name: index + 1,
+      poids: item.kilogram,
+      calories: item.calories,
+    }));
 
     return formatedData;
   }
 
-  static formatLineChartData(data: any) {
-    function dayOfWeek(dayIndex: number) {
-      if (dayIndex) return ["L", "M", "M", "J", "V", "S", "D"][dayIndex - 1];
+  static formatLineChartData(data: { sessionLength: number; day: number }[]) {
+    function dayOfWeek(dayIndex: number): string | undefined {
+      const days = ["L", "M", "M", "J", "V", "S", "D"];
+      return days[dayIndex - 1];
     }
 
-    let formatedData = [];
-    let count = 1;
-
-    for (let item of data) {
-      formatedData.push({
-        name: count,
-        sessionLength: item.sessionLength,
-        day: dayOfWeek(item.day),
-      });
-      count++;
-    }
-
-    return formatedData;
+    return data.map((item, index) => ({
+      name: index + 1,
+      sessionLength: item.sessionLength,
+      day: dayOfWeek(item.day),
+    }));
   }
-  static formatRadialData(data: any) {
-    if (data.score)
-      return [{ name: "Score", value: data.score * 100, fill: "red" }];
-    if (data.todayScore)
-      return [{ name: "Score", value: data.todayScore * 100, fill: "red" }];
+
+  static formatRadialData(data: { score?: number; todayScore?: number }) {
+    const value = data.score ? data.score : data.todayScore;
+    return value ? [{ name: "Score", value: value * 100, fill: "red" }] : [];
   }
+
   static formatKPIData(data: any) {
     return {
       calories: {
@@ -79,8 +69,12 @@ class ChartData {
     let count = 0;
     let subject;
     for (let item of rawData.data) {
-      if (count == 0 || count == 3) subject = rawData.kind[item.kind];
-      else subject = this.#formatText(rawData.kind[item.kind], 6);
+      // On ignore le troncage pour les valeurs du haut et du bas
+      if (count == 0 || count == 3) {
+        subject = rawData.kind[item.kind];
+      } else {
+        subject = this.#formatText(rawData.kind[item.kind], 6);
+      }
 
       formatedData.push({
         subject: subject,
@@ -91,7 +85,7 @@ class ChartData {
     return formatedData;
   }
 
-  static #formatText(string, maxLength) {
+  static #formatText(string: string, maxLength: number) {
     // Vérifie si la chaîne doit être tronquée
     const needsTruncation = string.length > maxLength;
 

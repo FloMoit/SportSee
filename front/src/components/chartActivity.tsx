@@ -8,6 +8,7 @@ import {
   Bar,
   Rectangle,
   ResponsiveContainer,
+  TooltipProps,
 } from "recharts";
 import { useUserActivity } from "../hooks/useUser";
 import ChartData from "../utils/ChartData";
@@ -15,27 +16,23 @@ import ChartData from "../utils/ChartData";
 function ChartActivity() {
   const queryUserActivity = useUserActivity();
 
-  // TODO:USE MEMO
-  let data = [];
-  if (queryUserActivity.data !== undefined) {
-    data = ChartData.formatBarChartData(queryUserActivity.data.data);
-    console.log(data);
-  }
+  const data = ChartData.formatBarChartData(queryUserActivity.data?.data);
+
   if (queryUserActivity.isLoading) {
     return <div className="p-5">Chargement...</div>;
   }
 
-  const renderTooltip = ({ payload, active }) => {
+  const renderTooltip = ({ payload, active }: TooltipProps<string, "">) => {
     if (active) {
       return (
         <div className="bg-[#FF0000] p-1">
-          <p className="p-2 text-xs text-white ">{payload[0].value}kg</p>
-          <p className="p-2 text-xs text-white ">{payload[1].value}kCal</p>
+          <p className="p-2 text-xs text-white ">{payload?.[0].value}kg</p>
+          <p className="p-2 text-xs text-white ">{payload?.[1].value}kCal</p>
         </div>
       );
     }
   };
-  const renderCustomAxisTick = ({ payload, x, y }) => {
+  const renderCustomAxisTick = ({ payload, x, y }: any) => {
     return (
       <text fill="#9B9EAC" x={x - 5} y={y + 15}>
         {payload.index + 1}
@@ -44,15 +41,15 @@ function ChartActivity() {
   };
 
   return (
-    <div className="flex p-5 bg-gray-100 rounded w-100 aspect-[13/5] relative">
+    <div className="flex p-4 bg-gray-100 rounded w-100 aspect-[13/5] relative">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
           margin={{
-            top: 100,
+            top: 70,
             right: 0,
-            left: -20,
-            bottom: 5,
+            left: 0,
+            bottom: -40,
           }}>
           <CartesianGrid strokeDasharray="2 2" vertical={false} />
           <XAxis dataKey="day" tick={renderCustomAxisTick} stroke="#DEDEDE" />
@@ -60,7 +57,7 @@ function ChartActivity() {
             yAxisId="right"
             stroke="#9B9EAC"
             orientation="right"
-            domain={["dataMin-1", "dataMax+1"]}
+            domain={["dataMin-2", "dataMax+2"]}
             tickLine={false}
             axisLine={false}
           />
@@ -81,6 +78,8 @@ function ChartActivity() {
               right: -10,
               borderRadius: 3,
               lineHeight: "40px",
+              fontSize: "12px",
+              fontWeight: "semibold",
             }}
           />
           <Bar
@@ -103,7 +102,7 @@ function ChartActivity() {
           />
         </BarChart>
       </ResponsiveContainer>
-      <span className="absolute top-[30px] left-[30px] text-sm font-semibold">
+      <span className="absolute top-[30px] left-[30px] text-xs font-semibold">
         Activité quotidienne
       </span>
     </div>

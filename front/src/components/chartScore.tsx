@@ -14,11 +14,7 @@ import ChartData from "../utils/ChartData";
 function ChartScore() {
   const queryUserInfo = useUserInfo();
 
-  //TODO: USE MEMO
-  let data;
-  if (queryUserInfo.data !== undefined) {
-    data = ChartData.formatRadialData(queryUserInfo.data.data);
-  }
+  const data = ChartData.formatRadialData(queryUserInfo.data?.data);
 
   if (queryUserInfo.isLoading) {
     return <div className="p-5">Chargement...</div>;
@@ -27,10 +23,10 @@ function ChartScore() {
   const customLegend = ({ payload }) => {
     return (
       <div className="w-min">
-        <div className="p-1 text-[26px] font-bold text-center">
+        <div className="p-1 text-lg font-bold text-center">
           {payload[0].payload.value}%
         </div>
-        <div className="text--[16px] text-[#74798C] text-center">
+        <div className="text-xs text-[#74798C] text-center">
           de&nbsp;votre objectif
         </div>
       </div>

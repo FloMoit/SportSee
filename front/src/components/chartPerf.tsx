@@ -13,11 +13,7 @@ import ChartData from "../utils/ChartData";
 function ChartPerf() {
   const queryUserPerf = useUserPerformance();
 
-  //TODO: USE MEMO
-  let data = [];
-  if (queryUserPerf.data !== undefined) {
-    data = ChartData.formatRadarData(queryUserPerf.data.data);
-  }
+  const data = ChartData.formatRadarData(queryUserPerf.data?.data);
 
   if (queryUserPerf.isLoading) {
     return <div className="p-5">Chargement...</div>;

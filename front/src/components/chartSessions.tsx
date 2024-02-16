@@ -13,11 +13,9 @@ import ChartData from "../utils/ChartData";
 function ChartSessions() {
   const queryUserSession = useUserAverageSessions();
 
-  //TODO: USE MEMO
-  let data = [];
-  if (queryUserSession.data !== undefined) {
-    data = ChartData.formatLineChartData(queryUserSession.data.data.sessions);
-  }
+  const data = ChartData.formatLineChartData(
+    queryUserSession.data?.data.sessions
+  );
 
   if (queryUserSession.isLoading) {
     return <div className="p-5">Chargement...</div>;
@@ -88,7 +86,7 @@ function ChartSessions() {
           </defs>
         </LineChart>
       </ResponsiveContainer>
-      <span className="absolute opacity-60 top-[10%] left-[10%] text-white text-sm">
+      <span className="absolute opacity-60 top-[10%] left-[10%] text-white text-xs xl:text-sm">
         Durée moyenne des
         <br />
         sessions

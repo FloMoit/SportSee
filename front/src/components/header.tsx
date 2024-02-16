@@ -10,7 +10,7 @@ function Header() {
           className="object-contain h-full"
         />
       </div>
-      <ul className="flex flex-row self-center text-xl font-medium text-white grow justify-evenly">
+      <ul className="flex flex-row self-center text-lg font-medium text-white xl:text-xl grow justify-evenly">
         <li className="p-4">Accueil</li>
         <li className="p-4">Profil</li>
         <li className="p-4">Réglage</li>

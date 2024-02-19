@@ -17,7 +17,10 @@ function ChartScore() {
   const data = ChartData.formatRadialData(queryUserInfo.data?.data);
 
   if (queryUserInfo.isLoading) {
-    return <div className="p-5">Chargement...</div>;
+    return <></>;
+  }
+  if (queryUserInfo.isError) {
+    return <></>;
   }
 
   const customLegend = ({ payload }) => {

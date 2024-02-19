@@ -23,6 +23,8 @@ class ChartData {
       return days[dayIndex - 1];
     }
 
+    if (!data) return [];
+
     return data.map((item, index) => ({
       name: index + 1,
       sessionLength: item.sessionLength,
@@ -31,6 +33,8 @@ class ChartData {
   }
 
   static formatRadialData(data: { score?: number; todayScore?: number }) {
+    if (!data) return [];
+
     const value = data.score ? data.score : data.todayScore;
     return value ? [{ name: "Score", value: value * 100, fill: "red" }] : [];
   }
@@ -65,24 +69,22 @@ class ChartData {
   }
 
   static formatRadarData(rawData) {
-    let formatedData = [];
-    let count = 0;
-    let subject;
-    for (let item of rawData.data) {
-      // On ignore le troncage pour les valeurs du haut et du bas
-      if (count == 0 || count == 3) {
-        subject = rawData.kind[item.kind];
+    if (!rawData) return [];
+    const { data, kind } = rawData;
+
+    return data.map((item, index) => {
+      let subject;
+      if (index === 0 || index === 3) {
+        subject = kind[item.kind];
       } else {
-        subject = this.#formatText(rawData.kind[item.kind], 6);
+        subject = this.#formatText(kind[item.kind], 6);
       }
 
-      formatedData.push({
-        subject: subject,
+      return {
+        subject,
         value: item.value,
-      });
-      count++;
-    }
-    return formatedData;
+      };
+    });
   }
 
   static #formatText(string: string, maxLength: number) {

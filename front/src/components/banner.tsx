@@ -4,7 +4,19 @@ function Banner() {
   const query = useUserInfo();
 
   if (query.isLoading) {
-    return <div className="p-5">Chargement...</div>;
+    return (
+      <div className="p-5">
+        <h2 className="text-3xl font-semibold">Chargement...</h2>
+      </div>
+    );
+  } else if (query.isError) {
+    return (
+      <div className="p-5">
+        <h2 className="text-3xl font-semibold">
+          Cet utilisateur est introuvable
+        </h2>
+      </div>
+    );
   } else {
     return (
       <div className="flex flex-col p-5">

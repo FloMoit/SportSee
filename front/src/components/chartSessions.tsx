@@ -14,11 +14,14 @@ function ChartSessions() {
   const queryUserSession = useUserAverageSessions();
 
   const data = ChartData.formatLineChartData(
-    queryUserSession.data?.data.sessions
+    queryUserSession.data?.data?.sessions
   );
 
   if (queryUserSession.isLoading) {
-    return <div className="p-5">Chargement...</div>;
+    return <></>;
+  }
+  if (queryUserSession.isError) {
+    return <></>;
   }
 
   const CustomTooltip = ({ active, payload }) => {

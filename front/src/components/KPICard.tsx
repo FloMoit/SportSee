@@ -26,7 +26,10 @@ function KPICard(props) {
   }
 
   if (queryUserInfo.isLoading) {
-    return <div className="p-5">Chargement...</div>;
+    return <></>;
+  }
+  if (queryUserInfo.isError) {
+    return <></>;
   }
 
   return (

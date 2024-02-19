@@ -19,7 +19,10 @@ function ChartActivity() {
   const data = ChartData.formatBarChartData(queryUserActivity.data?.data);
 
   if (queryUserActivity.isLoading) {
-    return <div className="p-5">Chargement...</div>;
+    return <></>;
+  }
+  if (queryUserActivity.isError) {
+    return <></>;
   }
 
   const renderTooltip = ({ payload, active }: TooltipProps<string, "">) => {

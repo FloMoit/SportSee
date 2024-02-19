@@ -16,7 +16,10 @@ function ChartPerf() {
   const data = ChartData.formatRadarData(queryUserPerf.data?.data);
 
   if (queryUserPerf.isLoading) {
-    return <div className="p-5">Chargement...</div>;
+    return <></>;
+  }
+  if (queryUserPerf.isError) {
+    return <></>;
   }
 
   const renderCustomAxisTick = ({ cx, cy, radius, payload, index }) => {

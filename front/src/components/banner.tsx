@@ -23,7 +23,7 @@ function Banner() {
         <h1 className="text-4xl font-semibold">
           Bonjour{" "}
           <span className="text-primary">
-            {query.data.data.userInfos.firstName}
+            {query.data?.data?.userInfos.firstName}
           </span>
         </h1>
         <span>Félicitation ! Vous avez explosé vos objectifs hier 👏</span>

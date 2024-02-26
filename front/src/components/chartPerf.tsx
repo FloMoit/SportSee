@@ -1,11 +1,9 @@
 import {
   PolarAngleAxis,
   PolarGrid,
-  PolarRadiusAxis,
   Radar,
   RadarChart,
   ResponsiveContainer,
-  Tooltip,
 } from "recharts";
 import { useUserPerformance } from "../hooks/useUser";
 import ChartData from "../utils/ChartData";

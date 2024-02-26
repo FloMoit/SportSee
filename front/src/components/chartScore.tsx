@@ -1,8 +1,5 @@
 import {
-  Cell,
   Legend,
-  Pie,
-  PieChart,
   PolarAngleAxis,
   RadialBar,
   RadialBarChart,
@@ -14,7 +11,7 @@ import ChartData from "../utils/ChartData";
 function ChartScore() {
   const queryUserInfo = useUserInfo();
 
-  const data = ChartData.formatRadialData(queryUserInfo.data?.data);
+  let data = ChartData.formatRadialData(queryUserInfo.data?.data);
 
   if (queryUserInfo.isLoading) {
     return <></>;
@@ -27,7 +24,7 @@ function ChartScore() {
     return (
       <div className="w-min">
         <div className="p-1 text-lg font-bold text-center">
-          {payload[0].payload.value}%
+          {payload[0]?.payload.value}%
         </div>
         <div className="text-xs text-[#74798C] text-center">
           de&nbsp;votre objectif
@@ -38,7 +35,9 @@ function ChartScore() {
 
   return (
     <div className="relative flex bg-gray-100 rounded w-100 aspect-square">
-      <span className="absolute top-[5%] left-[5%]">Score</span>
+      <span className="absolute xl:top-[10%] xl:left-[10%] top-[5%] left-[5%] font-semibold">
+        Score
+      </span>
       <ResponsiveContainer width="100%" height="100%">
         <RadialBarChart
           startAngle={205}

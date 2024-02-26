@@ -105,7 +105,7 @@ function ChartActivity() {
           />
         </BarChart>
       </ResponsiveContainer>
-      <span className="absolute top-[30px] left-[30px] text-xs font-semibold">
+      <span className="absolute top-[30px] left-[30px] text-xs xl:text-sm font-semibold">
         Activité quotidienne
       </span>
     </div>
